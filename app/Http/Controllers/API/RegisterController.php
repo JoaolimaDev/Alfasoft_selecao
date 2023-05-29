@@ -77,9 +77,12 @@ class RegisterController extends BaseController
 
             $success['name'] =  $user->name;
 
-   
+
 
             return $this->sendResponse($success['token'], 'User login successfully.');
+
+
+            
 
         } 
 

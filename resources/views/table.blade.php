@@ -7,132 +7,324 @@
     <title>Project</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <style>
             body {
                 font-family: 'Nunito', sans-serif;
             }
-        </style>
+
+
+      </style>
+
+      <script>
+
+        
+
+        function html(params) {
+
+          
+let tab =
+        `   <thead class="thead-dark" id = "contatos">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">NOME</th>
+      <th scope="col">TELEFONE</th>
+      <th scope="col">FUNÇÕES</th>
+      
+
+    </tr>
+  </thead>
+         
+         
+         `;
+
+
+          for (let i = 0; i < params.length; i++) {
+        
+            
+              tab += `<tr>
+              <td>${params[i]['id']} </td>
+              <td>${params[i]['name']} </td>
+              <td>${params[i]['telefone']} </td>
+              
+
+            `;
+
+
+            tab += `
+            <td>
+         
+<button onclick= "set(${params[i]['id']})" type="button" class="btn btn-danger" > Deletar
+
+
+</button>
+
+<button type="button" class="btn btn-success">Atualizar</button>
+
+
+</td>
+</tr>
+`;
+
+            
+          }
+
+          document.getElementById("table_body").innerHTML = tab;
+
+        }
+
+        function html_02(params) {
+          
+                    
+let tab =
+        `   <thead class="thead-dark" id = "contatos">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">NOME</th>
+      <th scope="col">TELEFONE</th>
+
+    </tr>
+  </thead>
+         
+         
+         `;
+
+
+          for (let i = 0; i < params.length; i++) {
+        
+            
+              tab += `<tr>
+              <td>${params[i]['id']} </td>
+              <td>${params[i]['name']} </td>
+              <td>${params[i]['telefone']} </td>
+              
+
+            `;
+
+       
+       
+        }
+
+        document.getElementById("table_body").innerHTML = tab;
+
+      }
+
+        axios.get('http://127.0.0.1:8000/api')
+        .then(response => {
+
+         let cookie = document.cookie;
+
+  
+         const parts = cookie.split(`; username=`);
+
+
+          if (parts[1] == "User login successfully.") {
+
+            html(response.data.data);
+          }else{
+
+            html_02(response.data.data);
+
+          }
+
+        }).catch(
+          error => {
+            console.log(error);
+            
+        });
+
+
+        const set = (evt) =>{
+
+
+          var x;
+          var r=confirm("Deseja realmente deletar este");
+          if (r==true)
+            {
+            x= true;
+            }
+          else
+            {
+            x=false;
+            }
+
+
+            if (x === true) {
+              
+              axios.post('http://127.0.0.1:8000/api/delete', { id: evt}, {
+
+              headers: {
+                'content-type': 'application/json'
+              }
+
+              }).then(response => {
+
+                alert("Deletado com sucesso!")
+
+                window.location.href = "http://127.0.0.1:8000/";
+
+
+              }).catch(error => {
+                
+                alert("Erro ao deletar! Tente novamente mais tarde.")
+              });
+            }
+
+        
+
+        }
+        
+        const update = () => {
+
+          
+
+          axios.post('http://127.0.0.1:8000/api/search_contato', { id:  document.getElementById('textbox_id').value }, {
+
+          headers: {
+            'content-type': 'application/json'
+          }
+
+          }).then(response => {
+
+          
+            let cookie = document.cookie;
+
+  
+         const parts = cookie.split(`; username=`);
+
+         let tab= '';
+
+
+         if (parts[1] == "User login successfully.") {
+
+   tab +=
+        `   <thead class="thead-dark" id = "contatos">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">NOME</th>
+      <th scope="col">TELEFONE</th>
+      <th scope="col">FUNÇÕES</th>
+
+
+    </tr>
+  </thead>
+         
+         
+         `;
+            
+            
+            tab += `<tr>
+              <td>${response.data.data.id} </td>
+              <td>${response.data.data.name} </td>
+              <td>${response.data.data.telefone} </td>
+            
+             `;
+            
+
+             tab += `
+            <td>
+         
+<button onclick= "set(${response.data.data.id})" type="button" class="btn btn-danger" > Deletar
+
+
+</button>
+
+<button type="button" class="btn btn-success">Atualizar</button>
+
+
+</td>
+</tr>
+`;
+  }else{
+
+
+ 
+
+   tab +=
+        `   <thead class="thead-dark" id = "contatos">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">NOME</th>
+      <th scope="col">TELEFONE</th>
+
+    </tr>
+  </thead>
+         
+         
+         `;
+            
+            
+            tab += `<tr>
+              <td>${response.data.data.id} </td>
+              <td>${response.data.data.name} </td>
+              <td>${response.data.data.telefone} </td>
+            
+             `;
+          
+  }
+         
+
+            document.getElementById("table_body").innerHTML = tab;
+
+
+          }).catch(error => {
+            
+            console.log(error.code);
+
+          });
+
+
+        }
+    
+  </script>
+  
 </head>
 <body>
-    <div>
-            <ul class="nav">
+  
+
+    <div class="pad">
+    <nav class="navbar navbar-dark bg-dark" >
+      <ul class="nav">
+
         <li class="nav-item">
-            <a class="nav-link active" href="#">Login</a>
+          <a class="nav-link active" href="http://127.0.0.1:8000/login">Login</a>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" href="#">Registrar usuário</a>
+          <a class="nav-link" href="http://127.0.0.1:8000/register">Registrar usuário</a>
         </li>
-        </ul>
+
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:8000/register_contact">Registrar Contato</a>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link" href="http://127.0.0.1:8000/register_contact">Deslogar</a>
+        </li>
+
+
+      </ul>
+
+      <form class="form-inline">
+      <input   oninput="update()" id="textbox_id" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      </form>
+
+    </nav>
+       
     </div>
 
 
-<table id="employees" class="table"></table>
-
-
-<nav class="navbar navbar-light bg-light">
-  <form class="form-inline">
-    <input id="id" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button onclick= pesquisa() class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
-</nav>
-<script>
-
-fetch('http://127.0.0.1:8001/api/', {
-   headers: {
-      'Accept': 'application/json'
-   }
-})
-   .then(response => response.json())
-   .then(text => {
-
-    let data = text.data
-
-
-    let tab =
-        ` <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">name</th>
-      <th scope="col">telefone</th>
-
-    </tr>
-  </thead>
-         
-         
-         `;
-         
-         
-
-         
-    for (let i = 0; i < data.length; i++) {
-        
-        
-
-        tab += `<tr>
-    <td>${data[i]['id']} </td>
-    <td>${data[i]['name']} </td>
-    <td>${data[i]['telefone']} </td>
-
-</tr>`;
-
-
-
-
-   }
-
-   document.getElementById("employees").innerHTML = tab;
-   
-}
-   )
-   
-
-  function pesquisa() {
-    
-    let id = document.getElementById("id").value;
-
-    fetch('http://127.0.0.1:8001/api/search_contato', {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ "id": id })
-})
-.then(response => response.json())
-   .then(text => {
-
-    let tab =
-        ` <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">name</th>
-      <th scope="col">telefone</th>
-
-    </tr>
-  </thead>
-         
-         
-         `;
-
-         tab += `<tr>
-    <td>${text.data.id} </td>
-    <td>${text.data.name} </td>
-    <td>${text.data.telefone} </td>
-
-
-</tr>`;
-
-document.getElementById("employees").innerHTML = tab;
-
-    
-}
-   )
-  
-
-  }
-
+    <table class="table">
  
-    </script>
+  <tbody id = "table_body">
+
+  </tbody>
+
+  
+  
+</table>
 
 </body>
 </html>

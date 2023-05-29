@@ -22,7 +22,7 @@ Route::get('/', [UserController::class, 'index']);
 Route::post('/register_contato', [UserController::class, 'store']);
 Route::put('/atualizar_contato', [UserController::class, 'update']);
 Route::post('/search_contato', [UserController::class, 'show']);
-Route::delete('/delete', [UserController::class, 'destroy']);
+Route::post('/delete', [UserController::class, 'destroy']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
