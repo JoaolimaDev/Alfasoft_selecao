@@ -30,3 +30,7 @@ Route::get('/register', function () {
 Route::get('/register_contact', function () {
     return view('registro_contact');
 });
+
+Route::get('/register_update', function () {
+    return view('resgister_update');
+});

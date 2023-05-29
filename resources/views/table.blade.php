@@ -14,12 +14,9 @@
                 font-family: 'Nunito', sans-serif;
             }
 
-
       </style>
 
       <script>
-
-        
 
         function html(params) {
 
@@ -60,7 +57,7 @@ let tab =
 
 </button>
 
-<button type="button" class="btn btn-success">Atualizar</button>
+<button onclick="update_query(${params[i]['id']})" type="button" class="btn btn-success">Atualizar</button>
 
 
 </td>
@@ -230,7 +227,7 @@ let tab =
 
 </button>
 
-<button type="button" class="btn btn-success">Atualizar</button>
+<button  type="button" class="btn btn-success">Atualizar</button>
 
 
 </td>
@@ -276,6 +273,22 @@ let tab =
 
 
         }
+
+        function update_query(id) {
+
+          window.location.href = "http://127.0.0.1:8000/register_update?id=" +id;
+
+        }
+
+        function deslogar() {
+          
+          document.cookie = 'username=; Max-Age=0'
+
+
+          window.location.href = "http://127.0.0.1:8000/";
+
+
+        }
     
   </script>
   
@@ -301,7 +314,9 @@ let tab =
 
 
         <li class="nav-item">
-          <a class="nav-link" href="http://127.0.0.1:8000/register_contact">Deslogar</a>
+
+        <button onclick="deslogar()" type="button" class="btn btn-outline-danger">Deslogar</button>
+         
         </li>
 
 
